@@ -242,7 +242,7 @@ class Launcher:
         skills = [QuantitativeTradingSkill(), FactorMiningSkill()]
         
         ADDITIONAL_INFO = """
-A-share in 2024 had sharply increased and sharply decreased days. Be cautious about the risk of sharp declines and consider incorporating risk management factors that can help mitigate losses during market downturns.
+Here are some market index references:
 
 CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
 """
@@ -274,8 +274,6 @@ CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market 
         skills = [FactorScreeningSkill()]
 
         ADDITIONAL_INFO = """
-A-share in 2024 had sharply increased and sharply decreased days. Be cautious about the risk of sharp declines and consider incorporating risk management factors that can help mitigate losses during market downturns.
-
 Here are some market index references:
 
 CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
@@ -306,8 +304,6 @@ CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market 
         skills = [QuantitativeTradingSkill(), StrategyRegistrationSkill(), PositionManagementSkill()]
         
         ADDITIONAL_INFO = """
-A-share in 2024 had sharply increased and sharply decreased days. Be cautious about the risk of sharp declines and consider incorporating risk management factors that can help mitigate losses during market downturns.        
-
 Here are some market index references:
 
 000300.SH is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
