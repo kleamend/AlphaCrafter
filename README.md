@@ -40,7 +40,7 @@ cd ./alphacrafter
 
 ### 3. Create a Session in Sandbox
 
-AlphaCrafter uses a **sandbox** directory to manage isolated pipeline runs. Each session replicates the structure of `template_a` or `template_us` — you can create a new session by copying the appropriate template.
+AlphaCrafter manages isolated pipeline runs through a sandbox directory. Each new session is created by copying one of the existing templates (`template_a` or `template_us`). Once copied, you can follow the template's examples to import your dataset and complete the necessary configurations.
 
 **Reference Directory Tree**
 ```bash

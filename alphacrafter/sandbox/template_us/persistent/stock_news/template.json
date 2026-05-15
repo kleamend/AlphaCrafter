@@ -1,0 +1,18 @@
+[
+  {
+    "publish_date": "2025-03-17 15:30:00",
+    "title": "US Company A: Q1 2025 Net Profit Expected to Increase by 50%",
+    "summary": "The company released its earnings forecast, estimating Q1 net profit to grow 50%-60% year-over-year",
+    "source": "Bloomberg",
+    "category": "Earnings Forecast",
+    "sentiment": "positive"
+  },
+  {
+    "publish_date": "2025-03-17 15:30:00",
+    "title": "US Company A: Subsidiary Receives $2.8 Million Government Subsidy",
+    "summary": "The company's wholly-owned subsidiary recently received a government subsidy of $2.8 million",
+    "source": "Reuters",
+    "category": "Government Subsidy",
+    "sentiment": "positive"
+  }
+]
