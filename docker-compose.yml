@@ -1,0 +1,11 @@
+services:
+  alphacrafter:
+    build: .
+    image: alphacrafter:latest
+    container_name: alphacrafter
+    working_dir: /root/AlphaCrafter
+    volumes:
+      - ./alphacrafter:/root/AlphaCrafter/alphacrafter
+    stdin_open: true
+    tty: true
+    command: /bin/bash

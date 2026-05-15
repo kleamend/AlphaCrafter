@@ -1,0 +1,22 @@
+{
+    "gpt-5": {
+        "producer": "OpenAI",
+        "inputs": ["text", "image", "video", "audio", "pdf"],
+        "cost": {
+            "input": 1.25,
+            "output": 10
+        },
+        "input_token_limit": 128000,
+        "output_token_limit": 32000
+    },
+    "gpt-5.2": {
+        "producer": "OpenAI",
+        "inputs": ["text", "image", "video", "audio", "pdf"],
+        "cost": {
+            "input": 1.75,
+            "output": 14
+        },
+        "input_token_limit": 128000,
+        "output_token_limit": 32000
+    }
+}
