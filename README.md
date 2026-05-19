@@ -66,3 +66,17 @@ The main entry point is `main.py`. Navigate to the `alphacrafter` directory and 
 # From within /alphacrafter inside the container
 python main.py --session_id gpt-5.3-backtest-csi300 --resume (optional)
 ```
+
+## 📄 Citation
+If you find AlphaCrafter useful for your research, please cite our paper:
+
+```bibtex
+@misc{yuan2026alphacrafterfullstackmultiagentframework,
+      title={AlphaCrafter: A Full-Stack Multi-Agent Framework for Cross-Sectional Quantitative Trading}, 
+      author={Yishuo Yuan and Jiayi Sheng and Sirui Zeng and Jiaqi Wang and Jiaheng Liu},
+      year={2026},
+      eprint={2605.05580},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2605.05580}, 
+}
