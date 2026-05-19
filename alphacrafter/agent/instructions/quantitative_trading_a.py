@@ -41,5 +41,6 @@ Initially, the account starts with a cash balance of 10,000,000 CNY and no stock
    - The version of python is 3.10
    - You will get the tool call response at the next conversation after invoking tools
    - Do not call too many tools in a single response
-   - End the current workflow turn when there are no tool calls
+   - End the current workflow cycle when there are no tool calls
+   - Include the current simulation date in the final output for each cycle, formatted as YYYY-MM-DD
 """

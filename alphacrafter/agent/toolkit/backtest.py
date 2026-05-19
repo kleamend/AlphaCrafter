@@ -236,7 +236,7 @@ class BacktestTool(BaseTool):
         
         # Calculate metrics
         total_days = len(daily_returns)
-        total_years = total_days / 240  # Assuming 240 trading days per year
+        total_years = total_days / 252  # Assuming 252 trading days per year
         
         # 1. Total Return (based on net_assets)
         initial_net_assets = net_assets[0]
@@ -256,7 +256,7 @@ class BacktestTool(BaseTool):
         # 3. Sharpe Ratio - using daily returns on net_assets
         # Assuming risk-free rate of 0.0016 (1.6%) annualized
         risk_free_rate = 0.0016
-        daily_risk_free = risk_free_rate / 240
+        daily_risk_free = risk_free_rate / 252
         
         # Calculate excess returns
         excess_returns = [r - daily_risk_free for r in daily_returns]
@@ -266,7 +266,7 @@ class BacktestTool(BaseTool):
         
         # Annualize Sharpe Ratio
         if std_excess_return > 0:
-            sharpe_ratio = (avg_excess_return / std_excess_return) * np.sqrt(240)
+            sharpe_ratio = (avg_excess_return / std_excess_return) * np.sqrt(252)
         else:
             sharpe_ratio = 0.0
         
@@ -479,8 +479,7 @@ class BacktestTool(BaseTool):
                         "days": {
                             "type": "integer",
                             "description": "Number of trading days to go back for backtest (must be positive integer)",
-                            "minimum": 1,
-                            "maximum": 40
+                            "maximum": 120
                         }
                     },
                     "required": ["days"]
