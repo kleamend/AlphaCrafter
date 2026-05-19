@@ -6,8 +6,8 @@ import os
 
 # Configuration
 INITIAL_CAPITAL = 10000000
-TRADING_DAYS_PER_YEAR = 243  # Number of trading days in A-share market
-BENCHMARK_ANNUAL_RETURN = 0.0125  # Benchmark annual return (16.58% for CSI 300 from 2024 to 2026, 20.14% for S&P 500 from 2024 to 2026)
+TRADING_DAYS_PER_YEAR = 243  # Number of trading days
+BENCHMARK_ANNUAL_RETURN = 0.0125  # Benchmark annual return
 BENCHMARK_DAILY_RETURN = (1 + BENCHMARK_ANNUAL_RETURN) ** (1 / TRADING_DAYS_PER_YEAR) - 1  # Daily compounded
 
 def load_log_file(file_path):
