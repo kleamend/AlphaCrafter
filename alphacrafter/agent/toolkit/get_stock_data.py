@@ -22,9 +22,10 @@ class GetStockDataTool(BaseTool):
         self.dataset_dir_path = dataset_dir_path
         self.date_file_path = date_file_path
         
-        # Define column order for metrics (reduced to 8 core columns)
+        # Define column order for metrics (expanded to include valuation metrics)
         self.metric_columns = [
-            'date', 'open', 'close', 'high', 'low', 'volume', 'change', 'pct_change'
+            'date', 'open', 'close', 'high', 'low', 'volume', 'change', 'pct_change',
+            'PE', 'PS', 'PB', 'DYR'
         ]
         
         # Cache for loaded data
@@ -54,13 +55,15 @@ class GetStockDataTool(BaseTool):
             raise FileNotFoundError(f"Stock data file not found: {csv_path}")
         
         # Load CSV - only read required columns to save memory
-        required_cols = ['date', 'open', 'close', 'high', 'low', 'volume', 'change', 'pct_change']
+        required_cols = ['date', 'open', 'close', 'high', 'low', 'volume', 'change', 'pct_change', 'PE', 'PS', 'PB', 'DYR']
         try:
             df = pd.read_csv(csv_path, usecols=required_cols)
         except ValueError:
             # Fallback: read all columns then select
             df = pd.read_csv(csv_path)
-            df = df[required_cols]
+            # Only keep columns that exist in the dataframe
+            available_cols = [col for col in required_cols if col in df.columns]
+            df = df[available_cols]
         
         # Convert date to datetime for proper sorting and comparison
         df['date'] = pd.to_datetime(df['date'])
@@ -110,7 +113,11 @@ class GetStockDataTool(BaseTool):
             'low': 'min',         # Lowest low during the period
             'volume': 'sum',      # Total volume
             'change': 'last',     # Last period's absolute change
-            'pct_change': 'last'  # Last period's percentage change
+            'pct_change': 'last',  # Last period's percentage change
+            'PE': 'last',         # Last period's PE ratio
+            'PS': 'last',         # Last period's PS ratio
+            'PB': 'last',         # Last period's PB ratio
+            'DYR': 'last'         # Last period's dividend yield
         }
         
         # Resample and aggregate
@@ -160,6 +167,16 @@ class GetStockDataTool(BaseTool):
             metrics.append(f"PctChange={row['pct_change']:.4f}%")
         if 'change' in row and pd.notna(row['change']):
             metrics.append(f"Change={row['change']:+.4f}")
+        
+        # Valuation metrics
+        if 'PE' in row and pd.notna(row['PE']):
+            metrics.append(f"PE={row['PE']:.2f}")
+        if 'PS' in row and pd.notna(row['PS']):
+            metrics.append(f"PS={row['PS']:.2f}")
+        if 'PB' in row and pd.notna(row['PB']):
+            metrics.append(f"PB={row['PB']:.2f}")
+        if 'DYR' in row and pd.notna(row['DYR']):
+            metrics.append(f"DYR={row['DYR']:.4f}")
         
         return f"{date_str}: {', '.join(metrics)}"
     
@@ -260,13 +277,13 @@ class GetStockDataTool(BaseTool):
             return {
                 "type": "function",
                 "name": self.get_name(),
-                "description": "Get historical stock data for a symbol including date, open, close, high, low, volume, change, and pct_change. Supports daily, weekly, and monthly sampling periods.",
+                "description": "Get historical stock data for a symbol including date, open, close, high, low, volume, change, pct_change, PE, PS, PB, and DYR (dividend yield). Supports daily, weekly, and monthly sampling periods.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "symbol": {
                             "type": "string",
-                            "description": "Stock code (e.g., 'AAPL')"
+                            "description": "Stock code"
                         },
                         "length": {
                             "type": "integer",
