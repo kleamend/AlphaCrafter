@@ -80,3 +80,4 @@ If you find AlphaCrafter useful for your research, please cite our paper:
       primaryClass={cs.AI},
       url={https://arxiv.org/abs/2605.05580}, 
 }
+```

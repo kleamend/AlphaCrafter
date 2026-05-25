@@ -174,16 +174,6 @@ When you need to use a tool, you MUST respond with a tool call in the following 
 }
 </tool_call>
 
-Example:
-<tool_call>
-{
-  "name": "example_tool",
-    "arguments": {
-        "symbol": "EXAMPLE",
-        "number": 5
-    }
-}
-
 You can include explanatory text before or after the tool call. After you receive the tool response, continue with your task based on the result.
 """
         

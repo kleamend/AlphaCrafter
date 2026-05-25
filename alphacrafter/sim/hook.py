@@ -16,7 +16,6 @@ class Hook:
         Args:
             strategy_file_path: Path to the Python file containing registered hooks
         """
-        # 解析为绝对路径
         self.file_path = Path(strategy_file_path).absolute()
         print(f"🔍 Looking for strategy file at: {self.file_path}")
         
@@ -34,27 +33,21 @@ class Hook:
         print(f"✅ Found strategy file: {self.file_path}")
         
         try:
-            # 使用 importlib 动态导入模块
-            module_name = self.file_path.stem  # 文件名（不含扩展名）
+            module_name = self.file_path.stem
             
-            # 创建模块规范
             spec = importlib.util.spec_from_file_location(module_name, self.file_path)
             if spec is None or spec.loader is None:
                 print(f"❌ Failed to create module spec for {self.file_path}")
                 return
             
-            # 创建模块
             module = importlib.util.module_from_spec(spec)
-            
-            # 添加模块到 sys.modules
+
             sys.modules[module_name] = module
-            
-            # 执行模块
+
             spec.loader.exec_module(module)
             
             print(f"✅ File imported successfully as module: {module_name}")
             
-            # 查找被 @register_hook 装饰的函数
             print("🔍 Searching for hook functions...")
             hook_found = False
             
@@ -73,7 +66,7 @@ class Hook:
         except Exception as e:
             print(f"❌ Error loading hook file: {e}")
             traceback.print_exc()
-            raise  # 重新抛出异常，让上层处理
+            raise
     
     def on_tick(self) -> Any:
         """
@@ -99,4 +92,4 @@ class Hook:
             print(f"❌ Hook execution failed: {e}")
             print("📋 Traceback:")
             traceback.print_exc()
-            raise  # 重新抛出异常，让上层处理
+            raise
