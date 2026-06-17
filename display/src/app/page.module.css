@@ -1,0 +1,17 @@
+.pageShell {
+  min-height: 100dvh;
+  background: #08111f;
+  color: #f8fafc;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.scaffoldPanel {
+  max-width: 760px;
+}
+
+.kicker {
+  color: #69d8ff;
+  font-weight: 700;
+}

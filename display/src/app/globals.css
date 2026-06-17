@@ -1,0 +1,77 @@
+@import "@fontsource/fira-sans/300.css";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/500.css";
+@import "@fontsource/fira-sans/600.css";
+@import "@fontsource/fira-sans/700.css";
+@import "@fontsource/fira-code/400.css";
+@import "@fontsource/fira-code/500.css";
+@import "@fontsource/fira-code/600.css";
+@import "@fontsource/fira-code/700.css";
+
+:root {
+  color-scheme: dark;
+  --bg: #08111f;
+  --surface: #111827;
+  --surface-raised: #172033;
+  --text: #f8fafc;
+  --text-muted: #b9c3d6;
+  --border: rgba(148, 163, 184, 0.22);
+  --miner: #2f7bff;
+  --miner-soft: #69d8ff;
+  --screener: #f5b82e;
+  --screener-soft: #ffe5a3;
+  --trader: #f97316;
+  --trader-soft: #ffb15c;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --font-display: "Fira Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --font-body: "Fira Sans", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fira Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body, "Fira Sans", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif);
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--miner-soft);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
