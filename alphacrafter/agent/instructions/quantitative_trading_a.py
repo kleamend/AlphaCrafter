@@ -1,3 +1,17 @@
+"""
+A 股市场通用系统指令字符串
+
+该文件只定义一个常量 `QUANTITATIVE_TRADING_INSTRUCTION_A`，
+作为 A 股市场（CSI 300 成分股、CNY 计价、T+1 结算）下所有 Agent 的基础提示词。
+
+它定义了：
+  - 投资范围（Universe）
+  - 交易规则（T+1、手续费、订单过期时间、撮合时间 14:30 等）
+  - 工作区约定（路径、Python 版本、工具调用频次等）
+
+被 MINER / SCREENER / TRADER 三个 Agent 各自拼接使用。
+"""
+
 QUANTITATIVE_TRADING_INSTRUCTION_A = """
 This is an autonomous quantitative trading system composed of three specialized agents working in coordination. The system operates in the Chinese A-share market for a one-year trading period. Historical data from early 2016 to present is available for analysis, factor development, and strategy validation. The goal is to achieve stable returns while managing risk effectively.
 

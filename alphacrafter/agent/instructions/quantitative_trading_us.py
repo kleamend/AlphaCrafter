@@ -1,3 +1,18 @@
+"""
+美股市场通用系统指令字符串
+
+该文件只定义一个常量 `QUANTITATIVE_TRADING_INSTRUCTION_US`，
+作为美股市场（S&P 500 成分股、USD 计价、T+0 结算、支持做空与保证金）下
+所有 Agent 的基础提示词。
+
+关键差异（相对 A 股版）：
+  - T+0 结算（无锁仓期）
+  - 手续费 0.01%（A 股为 0.02%）
+  - 引入做空保证金机制
+  - 撮合时间为美东 15:30
+  - 交易数量无 100 股倍数限制
+"""
+
 QUANTITATIVE_TRADING_INSTRUCTION_US = """
 This is an autonomous quantitative trading system composed of three specialized agents working in coordination. The system operates in the US stock market for a one-year trading period. Historical data from early 2016 to present is available for analysis, factor development, and strategy validation. The goal is to achieve stable returns while managing risk effectively.
 

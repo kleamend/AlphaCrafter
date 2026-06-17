@@ -1,11 +1,32 @@
+"""
+因子检索工具（SearchFactorTool）
+
+功能概述：
+    在本地 factor 库中检索与查询关键词最相似的 alpha 因子。
+    默认使用 scikit-learn 的 TF-IDF 向量化 + 余弦相似度；
+    若 sklearn 不可用则降级为 Jaccard 文本相似度。
+
+数据流：
+    ┌──────────────────┐   启动   ┌────────────────────┐   查询   ┌────────────┐
+    │ factors/*.json   │ ──────→ │ TF-IDF 向量化（缓存）│ ──────→ │ cosine sim │
+    └──────────────────┘          └────────────────────┘          └────────────┘
+                                          ↓                                 ↓
+                                     1~2-gram 词表                     Top-K 因子
+
+设计要点：
+    - 启动时一次性把全库因子编码为 TF-IDF 矩阵；查询时只对 query 做 transform
+    - 关键词预处理：统一分隔符 → 小写，便于处理 "momentum high, ,21" 这类乱序串
+    - 文本构建：把因子名、描述、标签、计算式、中性化方法、参数等拼成单字符串
+"""
+
 from typing import Dict, Any, Callable, List, Optional
 import json
 import os
-from pathlib import Path
 import numpy as np
 
 from .base import BaseTool
 
+# ── sklearn 可用性检测 ───────────────────────────
 try:
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.metrics.pairwise import cosine_similarity
@@ -16,89 +37,84 @@ except ImportError:
 
 
 class SearchFactorTool(BaseTool):
-    """Tool for searching alpha factors using TF-IDF vector similarity."""
+    """基于 TF-IDF 相似度的因子检索工具。"""
 
     def __init__(self, factor_dir: str = "./factors"):
-        """
-        Initialize the search factor tool with TF-IDF based similarity.
+        """初始化因子检索工具。
 
-        Args:
-            factor_dir: Directory containing factor JSON files
+        参数:
+            factor_dir: 因子 JSON 文件目录。
         """
         self.factor_dir = factor_dir
-        self.vectorizer = None
+        self.vectorizer: Optional[TfidfVectorizer] = None
         self.factor_vectors = None
-        self.factors = []
-        self.factor_texts = []
-        
-        # Load factors and precompute vectors
+        self.factors: List[Dict] = []
+        self.factor_texts: List[str] = []
+
+        # 启动即加载并向量化（一次性开销）
         self._load_factors_and_vectors()
 
     def get_name(self) -> str:
+        """工具注册名。"""
         return "search_factor"
 
+    # ── 文本构建 ───────────────────────────
+
     def _build_factor_text(self, factor: Dict) -> str:
-        """
-        Build a comprehensive text representation of a factor.
-        """
+        """把一个因子的多源信息拼成单字符串（用于向量化）。"""
         text_parts = []
-        
-        # Factor name and description
+
+        # 名称与描述
         text_parts.append(factor.get("factor_name", ""))
         text_parts.append(factor.get("description", ""))
-        
-        # Factor category and tags
+
+        # 元数据：分类与标签
         metadata = factor.get("metadata", {})
         if metadata.get("category"):
             text_parts.append(metadata.get("category"))
         if metadata.get("tags"):
             text_parts.extend(metadata.get("tags", []))
-        
-        # Calculation expression
+
+        # 计算式
         calculation = factor.get("calculation", {})
         if calculation.get("expression"):
             text_parts.append(calculation.get("expression"))
-        
-        # Processing information
+
+        # 中性化方法
         processing = factor.get("processing", {})
         if processing.get("neutralization"):
             text_parts.append(processing.get("neutralization"))
-        
-        # Parameters
+
+        # 参数
         parameters = factor.get("parameters", {})
         for param_name, param_value in parameters.items():
             if isinstance(param_value, (int, float, str)):
                 text_parts.append(f"{param_name}:{param_value}")
-        
-        # Join all parts with spaces
+
+        # 统一小写
         return " ".join(text_parts).lower()
 
     def _parse_keyword_to_text(self, keyword: str) -> str:
+        """把不规范关键词归一化为可匹配的文本。
+
+        例如 "momentum high, ,21" -> "momentum high 21"。
         """
-        Parse and normalize keyword string into search text.
-        Handles irregular strings like "momentum high, ,21"
-        """
-        # Clean the keyword
         keyword = keyword.strip()
-        
-        # Replace commas and other separators with spaces
         for sep in [',', ';', '|', '-', '_']:
             keyword = keyword.replace(sep, ' ')
-        
-        # Remove extra whitespace
         keyword = ' '.join(keyword.split())
-        
         return keyword.lower()
 
+    # ── 加载与向量化 ───────────────────────────
+
     def _load_factors_and_vectors(self) -> None:
-        """Load all factor files and precompute TF-IDF vectors."""
+        """扫描因子目录，构建 TF-IDF 矩阵。失败的文件直接跳过。"""
         self.factors = []
         self.factor_texts = []
-        
+
         if not os.path.exists(self.factor_dir):
             return
-        
-        # Read all factor files
+
         for file in os.listdir(self.factor_dir):
             if file.endswith(".json"):
                 file_path = os.path.join(self.factor_dir, file)
@@ -108,16 +124,15 @@ class SearchFactorTool(BaseTool):
                         self.factors.append(factor)
                         self.factor_texts.append(self._build_factor_text(factor))
                 except Exception:
-                    continue  # skip bad files
-        
-        # Compute TF-IDF vectors if we have factors and sklearn is available
+                    continue  # 跳过任何无法解析的因子文件
+
         if SKLEARN_AVAILABLE and self.factor_texts:
             try:
                 self.vectorizer = TfidfVectorizer(
-                    max_features=5000,
+                    max_features=5000,   # 控制词表规模
                     stop_words='english',
-                    ngram_range=(1, 2),
-                    min_df=1
+                    ngram_range=(1, 2),  # 同时保留 1-gram 与 2-gram
+                    min_df=1,
                 )
                 self.factor_vectors = self.vectorizer.fit_transform(self.factor_texts)
             except Exception as e:
@@ -125,57 +140,42 @@ class SearchFactorTool(BaseTool):
                 self.vectorizer = None
                 self.factor_vectors = None
 
-    def _compute_tfidf_similarity(self, query_text: str) -> List[float]:
-        """
-        Compute TF-IDF similarity between query and all factors.
-        """
+    def _compute_tfidf_similarity(self, query_text: str) -> Optional[List[float]]:
+        """对 query 做 transform 后与因子矩阵做余弦相似度。"""
         if not SKLEARN_AVAILABLE or not self.vectorizer or self.factor_vectors is None:
             return None
-        
         try:
-            # Transform query using the same vectorizer
             query_vector = self.vectorizer.transform([query_text])
-            
-            # Compute cosine similarity
             similarities = cosine_similarity(query_vector, self.factor_vectors).flatten()
-            
             return similarities.tolist()
-            
         except Exception as e:
             print(f"Warning: Similarity computation failed: {e}")
             return None
 
     def _compute_text_score(self, factor_text: str, query_text: str) -> float:
-        """
-        Fallback text-based scoring when TF-IDF is not available.
-        """
+        """降级方案：基于词集合的 Jaccard 相似度。"""
         if not factor_text or not query_text:
             return 0.0
-        
-        # Simple token matching
         query_tokens = set(query_text.split())
         factor_tokens = set(factor_text.split())
-        
         if not query_tokens:
             return 0.0
-        
-        # Jaccard similarity
         intersection = len(query_tokens & factor_tokens)
         union = len(query_tokens | factor_tokens)
-        
         return intersection / union if union > 0 else 0.0
+
+    # ── 工具实现工厂 ───────────────────────────
 
     def get_implementation(self) -> Callable:
         def search_factor(keyword: str, threshold: float = 0.1) -> str:
-            """
-            Search alpha factors using TF-IDF vector similarity.
-            
-            Args:
-                keyword: Search keyword/phrase (e.g., "momentum high volatility", "mean reversion 20 days")
-                threshold: Minimum similarity score (0~1, default 0.1)
-                
-            Returns:
-                JSON string of matched factors with similarity scores
+            """用关键词检索最相关的 alpha 因子。
+
+            参数:
+                keyword:   检索关键词，如 "momentum high volatility"。
+                threshold: 相似度阈值（0~1，默认 0.1）。
+
+            返回值:
+                命中因子列表（含相似度分数）的 JSON 字符串。
             """
             try:
                 if not self.factors:
@@ -183,39 +183,35 @@ class SearchFactorTool(BaseTool):
                         "query": keyword,
                         "count": 0,
                         "message": "No factors found in directory",
-                        "results": []
+                        "results": [],
                     }, indent=2, ensure_ascii=False)
-                
-                # Parse and normalize keyword
+
+                # 归一化关键词
                 query_text = self._parse_keyword_to_text(keyword)
-                
-                # Compute similarity scores
+
+                # 计算每个因子的相似度
                 if SKLEARN_AVAILABLE and self.factor_vectors is not None:
                     similarities = self._compute_tfidf_similarity(query_text)
                     if similarities is not None:
                         scores = similarities
                     else:
-                        # Fallback to text-based scoring
                         scores = [self._compute_text_score(t, query_text) for t in self.factor_texts]
                 else:
-                    # Fallback to text-based scoring
                     scores = [self._compute_text_score(t, query_text) for t in self.factor_texts]
-                
-                # Build results with scores
+
+                # 收集高于阈值的命中项
                 results = []
                 for i, factor in enumerate(self.factors):
                     score = scores[i]
-                    
                     if score >= threshold:
                         factor_copy = factor.copy()
                         factor_copy["_score"] = round(score, 4)
                         factor_copy["_similarity_method"] = "tfidf" if SKLEARN_AVAILABLE else "text"
                         results.append(factor_copy)
-                
-                # Sort by score descending
+
+                # 按分数降序
                 results.sort(key=lambda x: x["_score"], reverse=True)
-                
-                # Add search metadata
+
                 response = {
                     "query": keyword,
                     "normalized_query": query_text,
@@ -223,39 +219,34 @@ class SearchFactorTool(BaseTool):
                     "similarity_method": "tfidf" if SKLEARN_AVAILABLE else "text",
                     "threshold": threshold,
                     "total_factors": len(self.factors),
-                    "results": results
+                    "results": results,
                 }
-                
                 return json.dumps(response, indent=2, ensure_ascii=False)
-                
+
             except FileNotFoundError as e:
-                return json.dumps({
-                    "error": str(e),
-                    "query": keyword
-                }, indent=2, ensure_ascii=False)
+                return json.dumps({"error": str(e), "query": keyword}, indent=2, ensure_ascii=False)
             except Exception as e:
                 return json.dumps({
                     "error": f"Error searching factors: {str(e)}",
-                    "query": keyword
+                    "query": keyword,
                 }, indent=2, ensure_ascii=False)
-        
+
         return search_factor
 
+    # ── 公开重载方法（外部调用） ───────────────────────────
+
     def reload_factors(self) -> str:
-        """
-        Reload factors from disk and recompute vectors.
-        Useful when new factors are added.
-        """
+        """重新扫描因子目录并重建向量索引（在外部新增因子后使用）。"""
         self._load_factors_and_vectors()
         return json.dumps({
             "status": "reloaded",
             "factor_count": len(self.factors),
             "vectors_computed": self.factor_vectors is not None,
-            "method": "tfidf" if SKLEARN_AVAILABLE else "text"
+            "method": "tfidf" if SKLEARN_AVAILABLE else "text",
         }, indent=2, ensure_ascii=False)
 
     def get_description(self, producer: str = "OpenAI") -> Dict[str, Any]:
-        """Return tool description based on the producer."""
+        """返回 OpenAI 工具描述 schema。"""
         if producer == "OpenAI":
             return {
                 "type": "function",
@@ -273,15 +264,20 @@ class SearchFactorTool(BaseTool):
                     "properties": {
                         "keyword": {
                             "type": "string",
-                            "description": "Search keyword or phrase (e.g., 'momentum high volatility', 'mean reversion 20 days', 'volume price trend')"
+                            "description": (
+                                "Search keyword or phrase (e.g., 'momentum high volatility', "
+                                "'mean reversion 20 days', 'volume price trend')"
+                            ),
                         },
                         "threshold": {
                             "type": "number",
-                            "description": "Minimum similarity score (0 to 1, default 0.1). Higher values return only very similar factors."
-                        }
+                            "description": (
+                                "Minimum similarity score (0 to 1, default 0.1). "
+                                "Higher values return only very similar factors."
+                            ),
+                        },
                     },
-                    "required": ["keyword"]
-                }
+                    "required": ["keyword"],
+                },
             }
-        else:
-            raise ValueError(f"Unsupported producer: {producer}")
+        raise ValueError(f"Unsupported producer: {producer}")

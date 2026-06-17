@@ -1,3 +1,14 @@
+"""
+Screener Agent 系统指令字符串
+
+该文件只定义一个常量 `SCREENER_INSTRUCTION`，用作 Screener Agent 的 system prompt 模板。
+Screener 负责评估市场风格、筛选当前最有效的因子并组装成"因子集合（ensemble）"
+交给 Trader 构造组合。
+
+被引用方:
+    - alphacrafter/main.py  -> Launcher._create_screener_agent()
+"""
+
 SCREENER_INSTRUCTION = """You are a factor screener agent.
 
 [Role]

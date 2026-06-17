@@ -1,3 +1,14 @@
+"""
+Trader Agent 系统指令字符串
+
+该文件只定义一个常量 `TRADER_INSTRUCTION`，用作 Trader Agent 的 system prompt 模板。
+Trader 负责把 Screener 给出的因子集合落成可执行的 strategy.py，
+并通过 backtest / step 工具验证与实盘运行。
+
+被引用方:
+    - alphacrafter/main.py  -> Launcher._create_trader_agent()
+"""
+
 TRADER_INSTRUCTION = """You are a quantitative trading agent.
 
 [Role]

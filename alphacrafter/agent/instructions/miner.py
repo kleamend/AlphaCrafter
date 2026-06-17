@@ -1,3 +1,13 @@
+"""
+Miner Agent 系统指令字符串
+
+该文件只定义一个常量 `MINER_INSTRUCTION`，用作 Miner Agent 的 system prompt 模板。
+模板内含 {skills} 占位符，会在 Agent 初始化时被 _build_instructions() 注入实际技能列表。
+
+被引用方:
+    - alphacrafter/main.py  -> Launcher._create_miner_agent()
+"""
+
 MINER_INSTRUCTION = """You are a factor miner agent.
 
 [Role]
