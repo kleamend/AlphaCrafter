@@ -35,6 +35,20 @@ export type StartRunRequest = {
   resume: boolean;
 };
 
+export type StartRunResponse = {
+  runId: string;
+  status: "starting" | "running";
+  sessionId: string;
+  commandPreview: string;
+  startedAt: string;
+};
+
+export type StopRunResponse = {
+  ok: boolean;
+  status: "stopping" | "idle";
+  message: string;
+};
+
 export type RunStatusResponse = {
   status: RunStatusName;
   runId: string | null;
