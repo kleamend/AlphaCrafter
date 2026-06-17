@@ -1,0 +1,151 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(54, 210, 120, 0.06), transparent 38%),
+    rgba(18, 24, 36, 0.72);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  min-height: 240px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text);
+}
+
+.hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sparkRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 0;
+  background: rgba(8, 17, 31, 0.6);
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.sparkLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.sparkKicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.sparkLatest {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.spark {
+  flex-shrink: 0;
+}
+
+.spark_up {
+  color: var(--success);
+}
+
+.spark_down {
+  color: var(--danger);
+}
+
+.spark_flat {
+  color: var(--text-muted);
+}
+
+.sparkEmpty {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 0;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border);
+}
+
+.tone_up {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.tone_down {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.tone_flat {
+  border-color: var(--border);
+}
+
+.cellLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cellValue {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.tone_up .cellValue {
+  color: var(--success);
+}
+
+.tone_down .cellValue {
+  color: var(--danger);
+}
+
+.footer {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}

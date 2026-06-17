@@ -1,0 +1,258 @@
+.player {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, rgba(116, 220, 255, 0.08), transparent 42%),
+    rgba(18, 24, 36, 0.72);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modeBadge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--miner-soft);
+  background: rgba(105, 216, 255, 0.12);
+  border: 1px solid rgba(105, 216, 255, 0.45);
+}
+
+.stepCounter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text);
+}
+
+.notice {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  border-left: 3px solid var(--miner-soft);
+  padding: 6px 10px;
+  background: rgba(105, 216, 255, 0.06);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--miner-soft);
+  color: var(--miner-soft);
+}
+
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.primaryButton:not(:disabled) {
+  background: rgba(47, 123, 255, 0.16);
+  border-color: rgba(47, 123, 255, 0.55);
+  color: var(--miner-soft);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: rgba(47, 123, 255, 0.22);
+  border-color: var(--miner-soft);
+  color: var(--miner-soft);
+}
+
+.cardsRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cardSlot {
+  border-radius: var(--radius-md);
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+.cardActive {
+  transform: translateY(-2px);
+  outline: 1px solid var(--miner-soft);
+  outline-offset: 2px;
+  border-radius: var(--radius-md);
+}
+
+.cardIdle {
+  opacity: 0.85;
+}
+
+.handoffAndLog {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 12px;
+}
+
+.handoff {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+.handoffLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.handoffBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.handoffTitle {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.handoffDetail {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.handoffMeta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--miner-soft);
+  margin-top: 4px;
+}
+
+.handoffEmpty {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(8, 17, 31, 0.7);
+  min-height: 120px;
+  max-height: 200px;
+}
+
+.terminalLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.terminalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.terminalLine {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  gap: 8px;
+  word-break: break-word;
+}
+
+.terminalTime {
+  color: var(--text-muted);
+}
+
+.terminalPrefix {
+  color: var(--miner-soft);
+  font-weight: 500;
+}
+
+.terminalText {
+  color: var(--text);
+}
+
+.terminalEmpty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 720px) {
+  .cardsRow {
+    grid-template-columns: 1fr;
+  }
+  .handoffAndLog {
+    grid-template-columns: 1fr;
+  }
+}

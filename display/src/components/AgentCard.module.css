@@ -1,0 +1,235 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  border-radius: 0;
+  background: rgba(18, 24, 36, 0.68);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  overflow: hidden;
+  transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.active {
+  transform: translateY(-2px);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+}
+
+.active::before {
+  opacity: 1;
+}
+
+.idle {
+  opacity: 0.78;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconFrame {
+  width: 64px;
+  height: 64px;
+  border-radius: 0;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+
+.active .iconFrame {
+  border-color: currentColor;
+  color: var(--miner-soft);
+  animation: phasePulse 2.4s ease-out infinite;
+}
+
+.accent_screener.active .iconFrame {
+  color: var(--screener-soft);
+}
+
+.accent_trader.active .iconFrame {
+  color: var(--trader-soft);
+}
+
+.iconImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.role {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.tagline {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.compactSummary {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.responsibilities {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.responsibilityList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.responsibilityList li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.responsibilityList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.toolsBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toolChips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.toolChip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 0;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.toolChipPulsing {
+  border-color: var(--miner-soft);
+  color: var(--miner-soft);
+  animation: toolCallFlash 1.4s ease-out 1;
+}
+
+.full {
+  min-height: 320px;
+}
+
+.compact {
+  min-height: 180px;
+  padding: 16px;
+  gap: 12px;
+}
+
+.compact .iconFrame {
+  width: 48px;
+  height: 48px;
+}
+
+.compact .role {
+  font-size: 17px;
+}
+
+.accent_miner.active {
+  border-color: var(--miner);
+}
+
+.accent_miner.active::before {
+  border-color: var(--miner-soft);
+  box-shadow: inset 0 0 0 1px var(--miner-soft);
+}
+
+.accent_screener.active {
+  border-color: var(--screener);
+}
+
+.accent_screener.active::before {
+  border-color: var(--screener-soft);
+  box-shadow: inset 0 0 0 1px var(--screener-soft);
+}
+
+.accent_trader.active {
+  border-color: var(--trader);
+}
+
+.accent_trader.active::before {
+  border-color: var(--trader-soft);
+  box-shadow: inset 0 0 0 1px var(--trader-soft);
+}
