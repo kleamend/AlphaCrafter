@@ -1,0 +1,15 @@
+[
+  {
+    "event": "run_start",
+    "timestamp": "2024-06-15T10:05:00",
+    "model": "gpt-5.3-codex"
+  },
+  {
+    "event": "interval_summary",
+    "timestamp": "2024-06-15T10:07:00",
+    "iteration": 15,
+    "summary": "Screener evaluated 5 candidate factors.",
+    "interval": 15,
+    "tools_executed_in_interval": ["get_index_data", "search_factor"]
+  }
+]

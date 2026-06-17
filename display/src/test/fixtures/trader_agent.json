@@ -1,0 +1,28 @@
+[
+  {
+    "event": "run_start",
+    "timestamp": "2024-06-15T10:10:00",
+    "model": "gpt-5.3-codex"
+  },
+  {
+    "event": "tool_error",
+    "timestamp": "2024-06-15T10:10:30",
+    "iteration": 3,
+    "tool": "backtest",
+    "error": "Insufficient data for backtest"
+  },
+  {
+    "event": "run_complete",
+    "timestamp": "2024-06-15T10:12:00",
+    "total_iterations": 10,
+    "total_cost": 0.0015,
+    "total_tool_calls": 4,
+    "tools_used": ["read_file", "write_file", "backtest"],
+    "final_state": {
+      "success": true,
+      "input": [],
+      "output_text": "Trader finished writing strategy.py",
+      "interrupted": false
+    }
+  }
+]

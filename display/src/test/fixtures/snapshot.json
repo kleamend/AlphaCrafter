@@ -1,0 +1,17 @@
+[
+  {
+    "timestamp": "2024-06-15 10:00:00",
+    "current_date": "2024-06-15",
+    "account": {
+      "net_assets": 100000.5,
+      "total_assets": 110000.0,
+      "available_cash": 50000.25,
+      "market_value": 60000.0,
+      "gross_position_rate": 0.6,
+      "net_position_rate": 0.5,
+      "watch_list": ["000001.SZ"],
+      "orders": [],
+      "positions": []
+    }
+  }
+]

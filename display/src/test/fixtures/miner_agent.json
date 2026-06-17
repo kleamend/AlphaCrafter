@@ -1,0 +1,43 @@
+[
+  {
+    "event": "agent_init",
+    "model": "gpt-5.3-codex",
+    "tools": ["read_file", "write_file", "shell", "search_factor"],
+    "skills": ["FactorMiningSkill"],
+    "instructions_length": 1024,
+    "summary_interval": 15,
+    "force_tool_call": false,
+    "timestamp": "2024-06-15T09:59:50"
+  },
+  {
+    "event": "run_start",
+    "run_id": "20240615_095950",
+    "timestamp": "2024-06-15T10:00:00",
+    "model": "gpt-5.3-codex"
+  },
+  {
+    "event": "iteration_complete",
+    "timestamp": "2024-06-15T10:00:05",
+    "iteration": 1,
+    "model": "gpt-5.3-codex",
+    "output": [],
+    "input_tokens": 100,
+    "output_tokens": 50,
+    "total_cost": 0.000123,
+    "tool_calls": [
+      {
+        "name": "search_factor",
+        "arguments": {"query": "momentum"},
+        "call_id": "call_001"
+      }
+    ],
+    "interrupted": false
+  },
+  {
+    "event": "tool_error",
+    "timestamp": "2024-06-15T10:00:10",
+    "iteration": 2,
+    "tool": "search_factor",
+    "error": "Search backend unavailable"
+  }
+]

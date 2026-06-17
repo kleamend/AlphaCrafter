@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2024-06-15T11:00:00",
+    "status": "success",
+    "days": 30,
+    "error": null,
+    "period": {
+      "start_date": "2024-05-15",
+      "end_date": "2024-06-15"
+    },
+    "metrics": {
+      "Total Return (%)": 5.42,
+      "Annualized Return (%)": 12.3,
+      "Sharpe Ratio": 1.25,
+      "Max Drawdown (%)": -3.1,
+      "Calmar Ratio": 3.97,
+      "Average Gross Position Rate (%)": 65.4,
+      "Average Net Position Rate (%)": 50.2
+    },
+    "snapshots": []
+  }
+]
