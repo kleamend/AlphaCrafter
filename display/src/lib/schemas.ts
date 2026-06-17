@@ -100,6 +100,12 @@ export type ParsedAgentLog = {
     toolCalls: ParsedToolCall[];
     error: string | null;
     outputText: string;
+    tool?: string;
+    summary?: string;
+    toolsExecutedInInterval?: string[];
+    totalIterations?: number | null;
+    totalToolCalls?: number | null;
+    toolsUsed?: string[];
   }>;
 };
 

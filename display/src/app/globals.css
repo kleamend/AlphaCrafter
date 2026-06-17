@@ -10,27 +10,35 @@
 
 :root {
   color-scheme: dark;
-  --bg: #08111f;
-  --surface: #111827;
-  --surface-raised: #172033;
-  --text: #f8fafc;
-  --text-muted: #b9c3d6;
-  --border: rgba(148, 163, 184, 0.22);
-  --miner: #2f7bff;
-  --miner-soft: #69d8ff;
-  --screener: #f5b82e;
-  --screener-soft: #ffe5a3;
-  --trader: #f97316;
-  --trader-soft: #ffb15c;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --bg: #070a10;
+  --bg-rail: #0d1119;
+  --surface: #121824;
+  --surface-raised: #192132;
+  --surface-warm: #211922;
+  --surface-ink: #090d15;
+  --text: #f5efe6;
+  --text-muted: #b8b2a7;
+  --text-dim: #7f8b9c;
+  --border: rgba(190, 178, 156, 0.18);
+  --border-strong: rgba(245, 239, 230, 0.34);
+  --miner: #3d8cff;
+  --miner-soft: #74dcff;
+  --screener: #f2c14f;
+  --screener-soft: #ffe7a4;
+  --trader: #f37a2d;
+  --trader-soft: #ffb067;
+  --success: #36d278;
+  --warning: #f2c14f;
+  --danger: #ff5f57;
   --font-display: "Fira Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
   --font-body: "Fira Sans", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Fira Code", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --shadow-panel: 0 24px 80px rgba(0, 0, 0, 0.28);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --shadow-panel: 0 22px 70px rgba(0, 0, 0, 0.32);
+  --shadow-line: 0 0 0 1px var(--border), 0 18px 44px rgba(0, 0, 0, 0.26);
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
 }
 
 * {
@@ -43,10 +51,28 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    linear-gradient(90deg, rgba(245, 239, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(245, 239, 230, 0.03) 1px, transparent 1px),
+    linear-gradient(135deg, #070a10 0%, #0c121c 48%, #111019 100%);
+  background-size: 48px 48px, 48px 48px, auto;
   color: var(--text);
   font-family: var(--font-body, "Fira Sans", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif);
   font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, rgba(61, 140, 255, 0.12), transparent 28%),
+    linear-gradient(245deg, rgba(243, 122, 45, 0.11), transparent 34%),
+    linear-gradient(180deg, rgba(242, 193, 79, 0.08), transparent 42%);
+  opacity: 0.78;
+  z-index: -1;
 }
 
 button,
@@ -63,6 +89,119 @@ button {
 :focus-visible {
   outline: 3px solid var(--miner-soft);
   outline-offset: 3px;
+}
+
+/* Motion keyframes ----------------------------------------------------
+ * Signature motion moments. Disabled under prefers-reduced-motion below.
+ */
+
+@keyframes phasePulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+    transform: scale(1.04);
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes lineFlow {
+  0% {
+    stroke-dashoffset: 60;
+    opacity: 0.35;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.9;
+  }
+}
+
+@keyframes panelEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes terminalLineIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scanlineSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes toolCallFlash {
+  0% {
+    background: rgba(105, 216, 255, 0.35);
+    transform: scale(1);
+  }
+  60% {
+    background: rgba(105, 216, 255, 0.1);
+    transform: scale(1.05);
+  }
+  100% {
+    background: transparent;
+    transform: scale(1);
+  }
+}
+
+@keyframes runwayPulse {
+  0% {
+    transform: translateX(-18%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(118%);
+    opacity: 0;
+  }
+}
+
+@keyframes portraitSettle {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

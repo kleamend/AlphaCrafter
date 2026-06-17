@@ -1,17 +1,21 @@
 .pageShell {
   min-height: 100dvh;
-  background: #08111f;
-  color: #f8fafc;
-  display: grid;
-  place-items: center;
-  padding: 32px;
+  background: transparent;
+  color: var(--text);
+  padding: 24px;
+  max-width: 1760px;
+  margin: 0 auto;
 }
 
-.scaffoldPanel {
-  max-width: 760px;
+@media (max-width: 1023px) {
+  .pageShell {
+    padding: 24px;
+    gap: 22px;
+  }
 }
 
-.kicker {
-  color: #69d8ff;
-  font-weight: 700;
+@media (max-width: 767px) {
+  .pageShell {
+    padding: 12px;
+  }
 }
