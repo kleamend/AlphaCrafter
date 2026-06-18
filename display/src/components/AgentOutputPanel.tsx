@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 
 import type {
   LogsResponse,
@@ -45,8 +44,10 @@ export function AgentOutputPanel({
     { id: "trader", label: copy.trader },
   ];
   const [tab, setTab] = useState<TabId>("workflow");
-  const [localQuery, setLocalQuery] = useState("");
-  const effectiveQuery = (searchQuery || localQuery).trim().toLowerCase();
+  // The workspace-level search input above this panel is the single source
+  // of truth — AgentOutputPanel used to maintain its own local state, which
+  // confused users who expected the global box to filter this view too.
+  const effectiveQuery = searchQuery.trim().toLowerCase();
 
   const workflowRows = useMemo(() => buildWorkflowRows(workflow), [workflow]);
   const minerRows = useMemo(() => buildAgentRows("miner", agents?.miner), [agents]);
@@ -75,17 +76,6 @@ export function AgentOutputPanel({
             </button>
           ))}
         </div>
-        <label className={styles.searchLabel}>
-          <Search size={12} strokeWidth={2} aria-hidden="true" />
-          <input
-            type="search"
-            className={styles.searchInput}
-            placeholder={copy.searchRows}
-            value={localQuery}
-            onChange={(event) => setLocalQuery(event.target.value)}
-            aria-label={copy.searchRows}
-          />
-        </label>
       </div>
 
       <div className={styles.body} role="tabpanel">

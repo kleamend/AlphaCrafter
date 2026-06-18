@@ -49,17 +49,17 @@ const agentResponsibilities: Record<Locale, Record<AgentPhase, string[]>> = {
 export const dictionaries = {
   zh: {
     app: {
-      title: "AlphaCrafter Agent 作战台",
-      eyebrow: "本地量化 Agent 控制台",
+      title: "AlphaCrafter",
+      eyebrow: "本地量化控制台",
       subtitle:
         "用一个本地网页观察 Miner、Screener、Trader 的循环：启动真实 ALPHACRAFTER 环境、追踪工具调用、读取日志和产物。",
       localEnv: "ALPHACRAFTER 本地环境",
-      heroLabel: "AlphaCrafter 作战台主视觉",
+      heroLabel: "AlphaCrafter 主视觉",
       primaryAction: "启动真实运行",
       demoAction: "播放引导演示",
     },
     topbar: {
-      product: "AlphaCrafter Display",
+      product: "AlphaCrafter",
       live: "本地运行",
       realMode: "真实运行",
       demoMode: "引导演示",
@@ -72,7 +72,7 @@ export const dictionaries = {
       },
       demo: {
         label: "引导演示",
-        description: "使用脚本化事件展示三位 Agent 的协作路径，不启动 Python 进程。",
+        description: "使用脚本化事件展示 Miner、Screener、Trader 的协作路径，不启动 Python 进程。",
       },
     },
     agents: {
@@ -246,17 +246,17 @@ export const dictionaries = {
   },
   en: {
     app: {
-      title: "AlphaCrafter Agent Ops Deck",
-      eyebrow: "Local quant agent console",
+      title: "AlphaCrafter",
+      eyebrow: "Local quant control console",
       subtitle:
         "Observe the Miner, Screener, and Trader loop from one local page: start the ALPHACRAFTER env, trace tool calls, and inspect logs and artifacts.",
       localEnv: "ALPHACRAFTER local env",
-      heroLabel: "AlphaCrafter operations deck hero",
+      heroLabel: "AlphaCrafter hero",
       primaryAction: "Start real run",
       demoAction: "Play guided demo",
     },
     topbar: {
-      product: "AlphaCrafter Display",
+      product: "AlphaCrafter",
       live: "Local runtime",
       realMode: "Real Run",
       demoMode: "Guided Demo",

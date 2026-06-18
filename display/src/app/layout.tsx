@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AlphaCrafter Console",
+  title: "AlphaCrafter",
   description: "Local control console for the AlphaCrafter multi-agent trading framework.",
 };
 
