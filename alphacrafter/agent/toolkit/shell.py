@@ -241,7 +241,7 @@ class ShellTool(BaseTool):
 
     def get_description(self, producer: str = "OpenAI") -> Dict[str, Any]:
         """返回 OpenAI 工具描述 schema。"""
-        if producer == "OpenAI":
+        if producer in ("OpenAI", "MiniMax"):
             return {
                 "type": "function",
                 "name": self.get_name(),

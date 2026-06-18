@@ -167,6 +167,34 @@ setup_env.bat
 
 并准备一个 `.env`(可参考 `.env.example`),填入你的 LLM 接入凭证。
 
+### 🤖 当前默认模型:MiniMax-M3
+
+AlphaCrafter 当前默认接入 [MiniMax-M3](https://platform.minimaxi.com/docs/guides/models-intro)(1M 上下文、原生 tool calling)。
+走的是 **OpenAI Chat Completions 兼容端点**,因此无需额外的 SDK,直接用 `openai` Python 客户端即可。
+
+`.env` 中只需配置两项:
+
+```bash
+API_URL=https://api.minimaxi.com/v1
+API_KEY=<你的 MiniMax API Key>
+```
+
+> 想换其它 OpenAI 兼容端点(如 OpenAI 自身、Azure、其他第三方)?只需修改 `API_URL` /
+> `API_KEY`,并在 `sandbox/<session>/config/models.json` 的 `models.json` 中增加对应模型条目
+> 并设置 `producer` 字段(当前支持 `"OpenAI"` / `"MiniMax"`)。Launcher 会按 `producer`
+> 路由到合适的 Agent 实现。
+
+### 🧠 三个 Agent 实现 · 路由说明
+
+`alphacrafter/agent/openai/` 下目前并存三种 Agent 实现,Launcher 会按模型配置中的
+`producer` 字段选择:
+
+| 文件 | 类 | 适用 producer | 协议 |
+|---|---|---|---|
+| `agent.py` | `Agent` | `"OpenAI"` | OpenAI Responses API(原生 `function_call`) |
+| `chat_agent.py` | `ChatAgent` | `"OpenAI"` / `"MiniMax"` | OpenAI Chat Completions + 原生 `tool_calls` |
+| `general_agent.py` | `Agent` (GeneralAgent) | 不支持原生工具调用的兜底 | Chat Completions + XML `<tool_call>` 解析 |
+
 ### 🧪 在 sandbox 中创建会话
 
 AlphaCrafter 把每一次"流水线运行"隔离开来,存放在 `alphacrafter/sandbox/` 目录下。新建会话时,复制仓库自带的模板 `template_a`(A 股)或 `template_us`(美股),然后按模板里的示例导入你的数据集并完成相关配置。

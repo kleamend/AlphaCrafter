@@ -87,6 +87,10 @@ class StepTool(BaseTool):
         self._init_snapshot_file()
         self.step_snapshots = []  # 当前 run 累积的快照（用于指标计算）
 
+    def get_name(self) -> str:
+        """工具注册名。"""
+        return "step"
+
     # ── 初始化与持久化辅助 ───────────────────────────
 
     def _init_snapshot_file(self) -> None:
@@ -385,7 +389,7 @@ class StepTool(BaseTool):
 
     def get_description(self, producer: str = "OpenAI") -> Dict[str, Any]:
         """返回 OpenAI 工具描述 schema。"""
-        if producer == "OpenAI":
+        if producer in ("OpenAI", "MiniMax"):
             return {
                 "type": "function",
                 "name": self.get_name(),

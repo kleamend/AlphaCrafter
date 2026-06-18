@@ -1,22 +1,12 @@
 {
-    "gpt-5": {
-        "producer": "OpenAI",
-        "inputs": ["text", "image", "video", "audio", "pdf"],
+    "MiniMax-M3": {
+        "producer": "MiniMax",
+        "inputs": ["text"],
         "cost": {
-            "input": 1.25,
-            "output": 10
+            "input": 0,
+            "output": 0
         },
-        "input_token_limit": 128000,
-        "output_token_limit": 32000
-    },
-    "gpt-5.2": {
-        "producer": "OpenAI",
-        "inputs": ["text", "image", "video", "audio", "pdf"],
-        "cost": {
-            "input": 1.75,
-            "output": 14
-        },
-        "input_token_limit": 128000,
-        "output_token_limit": 32000
+        "input_token_limit": 1000000,
+        "output_token_limit": 524288
     }
 }

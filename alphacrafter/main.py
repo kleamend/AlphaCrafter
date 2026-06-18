@@ -38,7 +38,7 @@ from datetime import datetime
 from dataclasses import dataclass, field, asdict
 from dotenv import load_dotenv
 
-from agent.openai.agent import Agent
+from agent.openai import ChatAgent
 
 from agent.instructions import (
     QUANTITATIVE_TRADING_INSTRUCTION_A,
@@ -282,7 +282,7 @@ class Launcher:
 
     # ── Agent 工厂 ───────────────────────────
 
-    def _create_miner_agent(self) -> Agent:
+    def _create_miner_agent(self) -> ChatAgent:
         """构造 Miner Agent：负责 alpha 因子挖掘与验证。"""
         toolkit = [
             ReadFileTool(),
@@ -299,8 +299,8 @@ Here are some market index references:
 CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
 """
 
-        return Agent(
-            model_code="gpt-5.3-codex",
+        return ChatAgent(
+            model_code="MiniMax-M3",
             toolkit=toolkit,
             skills=skills,
             instructions=QUANTITATIVE_TRADING_INSTRUCTION_A + "\n\n" + MINER_INSTRUCTION + "\n\n" + ADDITIONAL_INFO,
@@ -310,7 +310,7 @@ CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market 
             force_tool_call=False,
         )
 
-    def _create_screener_agent(self) -> Agent:
+    def _create_screener_agent(self) -> ChatAgent:
         """构造 Screener Agent：负责市场风格评估与因子 ensemble 构造。"""
         toolkit = [
             ShellTool(),
@@ -328,8 +328,8 @@ Here are some market index references:
 CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
 """
 
-        return Agent(
-            model_code="gpt-5.3-codex",
+        return ChatAgent(
+            model_code="MiniMax-M3",
             toolkit=toolkit,
             skills=skills,
             instructions=QUANTITATIVE_TRADING_INSTRUCTION_A + "\n\n" + SCREENER_INSTRUCTION + "\n\n" + ADDITIONAL_INFO,
@@ -339,7 +339,7 @@ CSI300 (000300.SH) is the CSI 300 Index, a capitalization-weighted stock market 
             force_tool_call=False,
         )
 
-    def _create_trader_agent(self) -> Agent:
+    def _create_trader_agent(self) -> ChatAgent:
         """构造 Trader Agent：把 ensemble 落成 strategy.py 并验证/执行。"""
         toolkit = [
             ReadFileTool(),
@@ -355,8 +355,8 @@ Here are some market index references:
 000300.SH is the CSI 300 Index, a capitalization-weighted stock market index designed to replicate the performance of the top 300 stocks traded on the Shanghai and Shenzhen stock exchanges. It is the primary benchmark for the Chinese A-share market, similar to the S&P 500 in the US. The index covers approximately 60% of the total market capitalization of the A-share market and is widely used for institutional investment benchmarking, index funds, and derivatives such as futures and options.
 """
 
-        return Agent(
-            model_code="gpt-5.3-codex",
+        return ChatAgent(
+            model_code="MiniMax-M3",
             toolkit=toolkit,
             skills=skills,
             instructions=QUANTITATIVE_TRADING_INSTRUCTION_A + "\n\n" + TRADER_INSTRUCTION + "\n\n" + ADDITIONAL_INFO,
@@ -368,7 +368,7 @@ Here are some market index references:
 
     # ── Agent 单阶段执行 ───────────────────────────
 
-    def _run_agent_phase(self, agent: Agent, context: str, phase_name: str, max_iterations: int = 100) -> Dict[str, Any]:
+    def _run_agent_phase(self, agent: ChatAgent, context: str, phase_name: str, max_iterations: int = 100) -> Dict[str, Any]:
         """普通模式：执行一次 Agent 阶段，传入 user context。"""
         print(f"\n{'=' * 60}")
         print(f"🔬 {phase_name.upper()} PHASE")
@@ -384,7 +384,7 @@ Here are some market index references:
 
     def _run_agent_phase_with_resume(
         self,
-        agent: Agent,
+        agent: ChatAgent,
         last_input: Optional[List[Dict[str, str]]],
         context: str,
         phase_name: str,

@@ -55,7 +55,7 @@ class ReadFileTool(BaseTool):
         参数:
             producer: 当前使用的 LLM 生产方；当前实现仅支持 OpenAI。
         """
-        if producer == "OpenAI":
+        if producer in ("OpenAI", "MiniMax"):
             return {
                 "type": "function",
                 "name": self.get_name(),
