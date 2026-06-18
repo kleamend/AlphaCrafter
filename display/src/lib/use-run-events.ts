@@ -2,14 +2,9 @@
 
 import { useEffect, useRef } from "react";
 
+import { isActiveRunStatus } from "@/lib/agent-meta";
 import { buildId, systemLine } from "@/lib/console-helpers";
 import type { AgentPhase, RunStatusResponse, TerminalLine } from "@/lib/schemas";
-
-const ACTIVE_PHASE_STATUSES = new Set<RunStatusResponse["status"]>([
-  "starting",
-  "running",
-  "stopping",
-]);
 
 const SSE_ERROR_COOLDOWN_MS = 10_000;
 
@@ -27,6 +22,7 @@ export type UseRunEventsArgs = {
   appendTerminalLine: (line: TerminalLine) => void;
   setActivePhase: (phase: AgentPhase | null) => void;
   setActiveCycle: (cycle: number | null) => void;
+  onReconnect?: () => void;
 };
 
 export function useRunEvents({
@@ -36,6 +32,7 @@ export function useRunEvents({
   appendTerminalLine,
   setActivePhase,
   setActiveCycle,
+  onReconnect,
 }: UseRunEventsArgs): void {
   const handlersRef = useRef({
     onStatus,
@@ -44,6 +41,7 @@ export function useRunEvents({
     appendTerminalLine,
     setActivePhase,
     setActiveCycle,
+    onReconnect,
   });
   handlersRef.current = {
     onStatus,
@@ -52,6 +50,7 @@ export function useRunEvents({
     appendTerminalLine,
     setActivePhase,
     setActiveCycle,
+    onReconnect,
   };
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export function useRunEvents({
         const payload = JSON.parse(event.data) as RunEventPayload;
         if (payload.type === "status") {
           handlersRef.current.onStatus(payload.status);
-          if (!ACTIVE_PHASE_STATUSES.has(payload.status.status)) {
+          if (!isActiveRunStatus(payload.status.status)) {
             handlersRef.current.setActivePhase(null);
             handlersRef.current.setActiveCycle(null);
           }
@@ -109,6 +108,10 @@ export function useRunEvents({
       handlersRef.current.appendTerminalLine(
         systemLine("SSE connection error — retrying…")
       );
+      // The browser's EventSource auto-reconnects on transient failures.
+      // We surface the attempt count so the parent component can show
+      // a "reconnecting" badge and so e2e tests can assert connection health.
+      handlersRef.current.onReconnect?.();
     };
 
     source.addEventListener("message", handleMessage as EventListener);

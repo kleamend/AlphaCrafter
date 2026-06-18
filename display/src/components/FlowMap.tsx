@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
-import { listAgentMeta } from "@/lib/agent-meta";
+import { PHASE_ORDER, listAgentMeta } from "@/lib/agent-meta";
 import { getAgentCopy, getCopy, type Locale } from "@/lib/i18n";
 import type { AgentPhase } from "@/lib/schemas";
 
@@ -18,7 +18,6 @@ export type FlowMapProps = {
 
 const NODE_X = [12, 50, 88] as const;
 const NODE_Y = 50;
-const PHASE_ORDER: ReadonlyArray<AgentPhase> = ["miner", "screener", "trader"];
 
 function arcPath(
   start: { x: number; y: number },

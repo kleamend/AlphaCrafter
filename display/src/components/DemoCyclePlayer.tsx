@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Pause, Play, RotateCcw, SkipForward } from "lucide-react";
 
 import { AgentCard } from "./AgentCard";
+import { PHASE_ORDER } from "@/lib/agent-meta";
 import { buildId } from "@/lib/console-helpers";
 import { demoSteps, type DemoStep } from "@/lib/demo-data";
 import { getCopy, getAgentCopy, type Locale } from "@/lib/i18n";
@@ -13,7 +14,6 @@ import type { AgentPhase, TerminalLine } from "@/lib/schemas";
 
 import styles from "./DemoCyclePlayer.module.css";
 
-const PHASE_ORDER: ReadonlyArray<AgentPhase> = ["miner", "screener", "trader"];
 const LOG_RING_LIMIT = 200;
 
 type DemoEventLine = { id: string; text: string; at: string };

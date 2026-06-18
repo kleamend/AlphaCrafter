@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { readErrorMessage, systemLine } from "@/lib/console-helpers";
 import type {
@@ -27,12 +27,6 @@ export type ConsoleData = {
   refreshSessions: () => Promise<void>;
   refreshStatus: () => Promise<void>;
 };
-
-const ACTIVE_PHASE_STATUSES = new Set<RunStatusResponse["status"]>([
-  "starting",
-  "running",
-  "stopping",
-]);
 
 const DEFAULT_RUN_STATUS: RunStatusResponse = {
   status: "idle",
@@ -111,19 +105,29 @@ export function useConsoleData({ appendTerminalLine }: UseConsoleDataArgs): Cons
     void refreshStatus();
   }, [refreshHealth, refreshSessions, refreshStatus]);
 
-  return {
-    sessions,
-    setSessions,
-    selectedSessionId,
-    setSelectedSessionId,
-    health,
-    healthError,
-    runStatus,
-    setRunStatus,
-    refreshHealth,
-    refreshSessions,
-    refreshStatus,
-  };
+  return useMemo(
+    () => ({
+      sessions,
+      setSessions,
+      selectedSessionId,
+      setSelectedSessionId,
+      health,
+      healthError,
+      runStatus,
+      setRunStatus,
+      refreshHealth,
+      refreshSessions,
+      refreshStatus,
+    }),
+    [
+      sessions,
+      selectedSessionId,
+      health,
+      healthError,
+      runStatus,
+      refreshHealth,
+      refreshSessions,
+      refreshStatus,
+    ]
+  );
 }
-
-export { ACTIVE_PHASE_STATUSES };

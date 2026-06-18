@@ -1,6 +1,6 @@
 import type { StaticImageData } from "next/image";
 
-import type { AgentPhase } from "@/lib/schemas";
+import type { AgentPhase, RunStatusName } from "@/lib/schemas";
 
 import minerAgent from "../../picture/Miner_Agent.png";
 import minerIcon from "../../picture/Miner_Icon.png";
@@ -31,6 +31,25 @@ export type AgentMeta = {
 
 const ART_DIMENSION = 1024;
 const ICON_DIMENSION = 256;
+
+// Single source of truth for the Miner -> Screener -> Trader order. Anywhere
+// that needs to walk, sort, or look up the "next" phase should import this
+// constant rather than redeclaring it.
+export const PHASE_ORDER: ReadonlyArray<AgentPhase> = ["miner", "screener", "trader"];
+
+// Process status values that mean a run is currently in flight (starting,
+// running, or stopping). Replaces the four previously-redundant definitions
+// of "is the process active" across the codebase.
+const ACTIVE_STATUS_NAMES: ReadonlySet<RunStatusName> = new Set([
+  "starting",
+  "running",
+  "stopping",
+]);
+
+export function isActiveRunStatus(status: string | RunStatusName | null | undefined): boolean {
+  if (!status) return false;
+  return ACTIVE_STATUS_NAMES.has(status as RunStatusName);
+}
 
 const AGENT_META: Record<AgentPhase, AgentMeta> = {
   miner: {

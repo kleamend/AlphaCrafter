@@ -1,6 +1,5 @@
+import { PHASE_ORDER } from "@/lib/agent-meta";
 import type { AgentPhase, LogsResponse } from "@/lib/schemas";
-
-const PHASE_ORDER: ReadonlyArray<AgentPhase> = ["miner", "screener", "trader"];
 
 // Walk each phase's events in reverse-chronological order and collect unique
 // tool names until we hit the cap. The result is consumed by AgentCard to

@@ -3,6 +3,7 @@
 import { AlertTriangle, CheckCircle, Play, RotateCw, Square } from "lucide-react";
 
 import { SessionPicker } from "./SessionPicker";
+import { isActiveRunStatus } from "@/lib/agent-meta";
 import { getCopy, type Locale } from "@/lib/i18n";
 import type { RunStatusName } from "@/lib/schemas";
 import type { SessionSummary } from "@/lib/schemas";
@@ -27,12 +28,6 @@ export type RunControlPanelProps = {
   className?: string;
   locale?: Locale;
 };
-
-const PROCESS_RUNNING: ReadonlySet<RunStatusName> = new Set([
-  "starting",
-  "running",
-  "stopping",
-]);
 
 function statusVariant(status: RunStatusName, locale: Locale): {
   label: string;
@@ -84,7 +79,7 @@ export function RunControlPanel({
   locale = "en",
 }: RunControlPanelProps) {
   const copy = getCopy(locale).runControl;
-  const processRunning = PROCESS_RUNNING.has(runStatus);
+  const processRunning = isActiveRunStatus(runStatus);
   const startDisabled =
     !selectedSessionId || processRunning || isStarting || isStopping;
   const stopDisabled = !processRunning || isStopping;

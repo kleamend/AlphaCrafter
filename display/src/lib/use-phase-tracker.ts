@@ -2,9 +2,8 @@
 
 import { useCallback, useState } from "react";
 
+import { PHASE_ORDER } from "@/lib/agent-meta";
 import type { AgentPhase } from "@/lib/schemas";
-
-const PHASE_ORDER: ReadonlyArray<AgentPhase> = ["miner", "screener", "trader"];
 
 export type PhaseTracker = {
   activePhase: AgentPhase | null;
