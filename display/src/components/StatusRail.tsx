@@ -1,8 +1,11 @@
 import {
   Activity,
+  CheckCircle2,
   CircleDot,
   Cog,
   ServerCog,
+  TriangleAlert,
+  XCircle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -49,6 +52,28 @@ const DEFAULT_ITEMS: StatusItem[] = [
   },
 ];
 
+// State indicator shown next to each rail item. Pure color was the only
+// differentiator before, which failed WCAG 1.4.1 (color is not the sole
+// means of conveying status). Now we pair the kind with a recognizable
+// shape so color-blind users and screen-reader users get the same info.
+function KindGlyph({ kind }: { kind: StatusKind }) {
+  const label =
+    kind === "ok" ? "ok" : kind === "warn" ? "warning" : kind === "down" ? "error" : "idle";
+  const Icon =
+    kind === "ok"
+      ? CheckCircle2
+      : kind === "warn"
+        ? TriangleAlert
+        : kind === "down"
+          ? XCircle
+          : CircleDot;
+  return (
+    <span className={styles.kindGlyph} aria-label={label} role="img">
+      <Icon size={12} strokeWidth={2.5} aria-hidden="true" />
+    </span>
+  );
+}
+
 export type StatusRailProps = {
   items?: StatusItem[];
   className?: string;
@@ -75,6 +100,7 @@ export function StatusRail({ items, className, ariaLabel = "System status" }: St
               <span className={styles.label}>{item.label}</span>
               <span className={styles.status}>{item.status}</span>
             </span>
+            <KindGlyph kind={item.kind} />
           </li>
         );
       })}
